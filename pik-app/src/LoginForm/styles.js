@@ -1,7 +1,6 @@
 import InputMask from "react-input-mask";
 import styled, { css } from "styled-components";
 
-
 const errorStyles = css`
   border: 2px solid red;
 `;
@@ -13,7 +12,14 @@ export const InputMaskStyled = styled(InputMask)`
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
-  ${({ error }) => error && errorStyles};
+  ${({ error }) => error === 'true' && errorStyles};
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  ${({ error }) => error === 'true' && errorStyles};
 `;
 
 export const FormContainer = styled.div`
@@ -49,12 +55,7 @@ export const Label = styled.label`
   margin-bottom: 8px;
 `;
 
-export const Input = styled.input`
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 16px;
-  ${({ error }) => error && errorStyles};
-`;
+
 
 export const ErrorMessage = styled.p`
   color: red;

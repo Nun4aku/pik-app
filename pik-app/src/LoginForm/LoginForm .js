@@ -15,20 +15,30 @@ const {
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
-    email: "",
     firstName: "",
     lastName: "",
     phone: "",
+    email: "",
     roomCount: "",
   });
 
   const [errors, setErrors] = useState({
     firstName: false,
     lastName: false,
+    phone: false,
     email: false,
     roomCount: false,
-    phone: false,
   });
+
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  const labelNames = {
+    firstName: "Имя",
+    lastName: "Фамилия",
+    email: "Email",
+    roomCount: "Количество помещений",
+    phone: "Телефон",
+  };
 
   const handleFocus = (fieldName) => {
     setErrors((prevErrors) => ({
@@ -74,6 +84,7 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setFormSubmitted(true); // Устанавливаем, что форма была отправлена
 
     setErrors({
       firstName: !validateName(formData.firstName),
@@ -104,65 +115,37 @@ const LoginForm = () => {
     <FormContainer>
       <BackgroundImage />
       <Form onSubmit={handleSubmit}>
-        <Label>Имя:</Label>
-        <Input
-          onFocus={() => handleFocus("firstName")}
-          error={errors.firstName}
-          type="text"
-          name="firstName"
-          value={formData.firstName}
-          onChange={handleChange}
-        />
 
-        <Label>Фамилия:</Label>
-        <Input
-          onFocus={() => handleFocus("lastName")}
-          error={errors.lastName}
-          type="text"
-          name="lastName"
-          value={formData.lastName}
-          onChange={handleChange}
-        />
-
-        <Label>Телефон:</Label>
-        <InputMaskStyled
-          onFocus={() => handleFocus("phone")}
-          error={errors.phone}
-          mask="+7 (999) 999-99-99"
-          maskChar="_"
-          type="text"
-          name="phone"
-          placeholder="+7"
-          value={formData.phone}
-          onChange={handleChange}
-        />
-        {errors.phone && <ErrorMessage>{errors.phone}</ErrorMessage>}
-
-        <Label>Email:</Label>
-        <Input
-          onFocus={() => handleFocus("email")}
-          error={errors.email}
-          type="text"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
-
-        <Label>Количество помещений:</Label>
-        <Input
-          onFocus={() => handleFocus("roomCount")}
-          error={errors.roomCount}
-          type="text"
-          name="roomCount"
-          value={formData.roomCount}
-          onChange={handleChange}
-          pattern="[0-9]*"
-        />
+      {Object.keys(formData).map((name) => (
+          <div key={name}>
+            <Label>{labelNames[name]}:</Label>
+            {name === "phone" ? (
+              <InputMaskStyled
+                onFocus={() => handleFocus(name)}
+                error={(formSubmitted && errors[name]).toString()}
+                mask="+7 (999) 999-99-99"
+                maskChar="_"
+                type="text"
+                name={name}
+                placeholder="+7"
+                value={formData[name]}
+                onChange={handleChange}
+              />
+            ) : (
+              <Input
+                onFocus={() => handleFocus(name)}
+                error={(formSubmitted && errors[name]).toString()}
+                type="text"
+                name={name}
+                value={formData[name]}
+                onChange={handleChange}
+              />
+            )}
+          </div>
+        ))}
 
         <Button type="submit">Log In</Button>
       </Form>
-      <>{console.log("errors", errors)}</>
     </FormContainer>
   );
 };
