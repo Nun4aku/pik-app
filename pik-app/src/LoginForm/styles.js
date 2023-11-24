@@ -5,7 +5,7 @@ const errorStyles = css`
   border: 2px solid red;
 `;
 
-export const InputMaskStyled = styled(InputMask)`
+export const InputMaskStyled = styled(({ error, ...rest }) => <InputMask {...rest} />)`
   width: 100%;
   padding: 8px;
   margin-bottom: 16px;
@@ -15,7 +15,7 @@ export const InputMaskStyled = styled(InputMask)`
   ${({ error }) => error === 'true' && errorStyles};
 `;
 
-export const Input = styled.input`
+export const Input = styled(({ error, ...rest }) => <input {...rest} />)`
   width: 100%;
   padding: 8px;
   margin-bottom: 16px;
