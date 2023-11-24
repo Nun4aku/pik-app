@@ -5,25 +5,18 @@ const errorStyles = css`
   border: 2px solid red;
 `;
 
-export const InputMaskStyled = styled(({ error, ...rest }) => <InputMask {...rest} />)`
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  ${({ error }) => error === 'true' && errorStyles};
+export const InputMaskStyled = styled(({ error, ...rest }) => (
+  <InputMask {...rest} />
+))`
+  ${({ error }) => error === "true" && errorStyles};
 `;
 
 export const Input = styled(({ error, ...rest }) => <input {...rest} />)`
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 16px;
-  ${({ error }) => error === 'true' && errorStyles};
+  ${({ error }) => error === "true" && errorStyles};
 `;
 
 export const FormContainer = styled.div`
-  max-width: 400px;
+  max-width: 544px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -31,6 +24,21 @@ export const FormContainer = styled.div`
   justify-content: center;
   height: 100vh;
 `;
+
+export const HorizontalInputs = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+export const VerticalInputs = styled.div``;
+
+export const OneInput = styled.div`
+  border: SOLID 1px #dcdce6;
+  border-radius: 4px;
+`;
+
+export const Label = styled.label``;
 
 export const BackgroundImage = styled.div`
   background-image: url("https://0.pik.ru.cdn.pik-service.ru/undefined/2021/08/03/dji_0093.rev00_wj16guVhKoupGK8K.jpg");
@@ -45,17 +53,10 @@ export const BackgroundImage = styled.div`
 `;
 
 export const Form = styled.form`
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
+  background: white;
+  padding: 56px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 `;
-
-export const Label = styled.label`
-  margin-bottom: 8px;
-`;
-
-
 
 export const ErrorMessage = styled.p`
   color: red;
@@ -71,4 +72,3 @@ export const Button = styled.button`
   border-radius: 4px;
   cursor: pointer;
 `;
-

@@ -8,7 +8,8 @@ const {
   Form,
   Label,
   Input,
-  ErrorMessage,
+  HorizontalInputs,
+  VerticalInputs,
   Button,
   InputMaskStyled,
 } = styles;
@@ -39,6 +40,9 @@ const LoginForm = () => {
     roomCount: "Количество помещений",
     phone: "Телефон",
   };
+
+  const horizontal = ["firstName", "lastName"];
+  const vertical = ["email", "roomCount", "phone"];
 
   const handleFocus = (fieldName) => {
     setErrors((prevErrors) => ({
@@ -102,8 +106,13 @@ const LoginForm = () => {
       validatePhone(formData.phone)
     ) {
       const data = {
-        user: { firstName: formData.firstName, lastName: formData.lastName, mail:formData.email, phone:formData.phone },
-        order: { flatsCount:formData.roomCount, time: new Date() },
+        user: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          mail: formData.email,
+          phone: formData.phone,
+        },
+        order: { flatsCount: formData.roomCount, time: new Date() },
       };
       console.log("Данные отправлены:", data);
     } else {
@@ -115,23 +124,10 @@ const LoginForm = () => {
     <FormContainer>
       <BackgroundImage />
       <Form onSubmit={handleSubmit}>
-
-      {Object.keys(formData).map((name) => (
-          <div key={name}>
-            <Label>{labelNames[name]}:</Label>
-            {name === "phone" ? (
-              <InputMaskStyled
-                onFocus={() => handleFocus(name)}
-                error={(formSubmitted && errors[name]).toString()}
-                mask="+7 (999) 999-99-99"
-                maskChar="_"
-                type="text"
-                name={name}
-                placeholder="+7"
-                value={formData[name]}
-                onChange={handleChange}
-              />
-            ) : (
+        <HorizontalInputs>
+          {horizontal.map((name) => (
+            <styles.OneInput key={name}>
+              <Label>{labelNames[name]}:</Label>
               <Input
                 onFocus={() => handleFocus(name)}
                 error={(formSubmitted && errors[name]).toString()}
@@ -140,9 +136,39 @@ const LoginForm = () => {
                 value={formData[name]}
                 onChange={handleChange}
               />
-            )}
-          </div>
-        ))}
+            </styles.OneInput>
+          ))}
+        </HorizontalInputs>
+
+        <VerticalInputs>
+          {vertical.map((name) => (
+            <styles.OneInput key={name}>
+              <Label>{labelNames[name]}:</Label>
+              {name === "phone" ? (
+                <InputMaskStyled
+                  onFocus={() => handleFocus(name)}
+                  error={(formSubmitted && errors[name]).toString()}
+                  mask="+7 (999) 999-99-99"
+                  maskChar="_"
+                  type="text"
+                  name={name}
+                  placeholder="+7"
+                  value={formData[name]}
+                  onChange={handleChange}
+                />
+              ) : (
+                <Input
+                  onFocus={() => handleFocus(name)}
+                  error={(formSubmitted && errors[name]).toString()}
+                  type="text"
+                  name={name}
+                  value={formData[name]}
+                  onChange={handleChange}
+                />
+              )}
+            </styles.OneInput>
+          ))}
+        </VerticalInputs>
 
         <Button type="submit">Log In</Button>
       </Form>
