@@ -1,4 +1,14 @@
 import styled from "styled-components";
+import InputMask from "react-input-mask";
+
+export const InputMaskStyled = styled(InputMask)`
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+`;
 
 export const FormContainer = styled.div`
   max-width: 400px;
@@ -53,3 +63,4 @@ export const Button = styled.button`
   border-radius: 4px;
   cursor: pointer;
 `;
+

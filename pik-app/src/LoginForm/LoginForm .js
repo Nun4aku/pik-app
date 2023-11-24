@@ -2,15 +2,7 @@
 import React, { useState } from "react";
 import * as styles from "./styles";
 
-const {
-  FormContainer,
-  BackgroundImage,
-  Form,
-  Label,
-  Input,
-  ErrorMessage,
-  Button,
-} = styles;
+const { FormContainer, BackgroundImage, Form, Label, Input, ErrorMessage, Button, InputMaskStyled } = styles;
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -24,16 +16,20 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({
     email: "",
     roomCount: "",
+    phone: "",
   });
 
   const validateEmail = (email) => {
-    // Простая проверка на наличие символа @ в email (для демонстрационных целей)
     return email.includes("@");
   };
 
   const validateRoomCount = (count) => {
-    // Простая проверка, что количество помещений является цифрой
     return /^\d+$/.test(count);
+  };
+
+  const validatePhone = (phone) => {
+    // Простая проверка на наличие символов +7 (999) 999-99-99 в телефоне
+    return /\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}/.test(phone);
   };
 
   const handleChange = (e) => {
@@ -43,7 +39,6 @@ const LoginForm = () => {
       [name]: value,
     }));
 
-    // Производим валидацию при изменении данных
     if (name === "email") {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -54,17 +49,18 @@ const LoginForm = () => {
         ...prevErrors,
         roomCount: validateRoomCount(value) ? "" : "Введите число",
       }));
+    } else if (name === "phone") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        phone: validatePhone(value) ? "" : "Некорректный номер телефона",
+      }));
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Проверяем валидность данных перед отправкой
-    if (
-      validateEmail(formData.email) &&
-      validateRoomCount(formData.roomCount)
-    ) {
+    if (validateEmail(formData.email) && validateRoomCount(formData.roomCount) && validatePhone(formData.phone)) {
       console.log("Данные отправлены:", formData);
     } else {
       console.log("Форма содержит ошибки");
@@ -75,6 +71,7 @@ const LoginForm = () => {
     <FormContainer>
       <BackgroundImage />
       <Form onSubmit={handleSubmit}>
+        
         <Label>Имя:</Label>
         <Input
           type="text"
@@ -92,12 +89,16 @@ const LoginForm = () => {
         />
 
         <Label>Телефон:</Label>
-        <Input
+        <InputMaskStyled
+          mask="+7 (999) 999-99-99"
+          maskChar="_"
           type="text"
           name="phone"
+          placeholder="+7"
           value={formData.phone}
           onChange={handleChange}
         />
+        {errors.phone && <ErrorMessage>{errors.phone}</ErrorMessage>}
 
         <Label>Email:</Label>
         <Input
